@@ -1,0 +1,186 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+enum Role {
+  SUPERADMIN
+  ADMIN
+  DRIVER
+  CLIENT
+}
+
+enum TripStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum CargoType {
+  GENERAL
+  FRAGILE
+  PERISHABLE
+  HAZARDOUS
+  HEAVY
+}
+
+// ─── SEDE ───────────────────────────────────────────────
+model Branch {
+  id        Int      @id @default(autoincrement())
+  name      String
+  country   String
+  city      String
+  address   String
+  createdAt DateTime @default(now())
+
+  users     UserBranch[]
+  vehicles  Vehicle[]
+  trips     Trip[]
+}
+
+// ─── USUARIO ────────────────────────────────────────────
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(CLIENT)
+  createdAt DateTime @default(now())
+
+  branches  UserBranch[]  // sedes a las que pertenece
+  driver    Driver?
+  client    Client? 
+  trips     Trip[]        @relation("ClientTrips")
+}
+
+// tabla intermedia User <-> Branch (un user puede estar en varias sedes)
+model UserBranch {
+  userId    Int
+  branchId  Int
+  user      User   @relation(fields: [userId], references: [id])
+  branch    Branch @relation(fields: [branchId], references: [id])
+
+  @@id([userId, branchId])
+}
+
+// ─── CONDUCTOR ──────────────────────────────────────────
+model Driver {
+  id        Int      @id @default(autoincrement())
+  license   String   @unique
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+
+  vehicles  Vehicle[]
+  trips     Trip[]
+}
+
+// ─── VEHICULO ───────────────────────────────────────────
+model Vehicle {
+  id                  Int       @id @default(autoincrement())
+  plate               String    @unique
+  brand               String
+  model               String
+  year                Int
+  maxCapacityKg       Float
+  totalKm             Float     @default(0)
+  totalTrips          Int       @default(0)
+  lastMaintenance     DateTime?
+  licenseExpiryDate   DateTime?
+
+  branchId  Int
+  branch    Branch  @relation(fields: [branchId], references: [id])
+
+  driverId  Int
+  driver    Driver  @relation(fields: [driverId], references: [id])
+
+  trips     Trip[]
+}
+
+// ─── CLIENTE (EMPRESA) ──────────────────────────────────
+model Client {
+  id                Int      @id @default(autoincrement())
+  companyName       String
+  industry          String   // rubro
+  country           String
+  distanceFromBranchKm Float
+  totalOrders       Int      @default(0)
+  totalTrucksSent   Int      @default(0)
+  totalRevenue      Float    @default(0)
+  createdAt         DateTime @default(now())
+
+  userId    Int     @unique
+  user      User    @relation(fields: [userId], references: [id])  
+  trips     Trip[]
+}
+
+// ─── TARIFA ─────────────────────────────────────────────
+model Tariff {
+  id            Int     @id @default(autoincrement())
+  name          String  // ej: "Internacional +100km"
+  country       String
+  minKm         Float
+  maxKm         Float?
+  cargoType     CargoType
+  multiplier    Float   // ej: 1.5
+  fixedAmount   Float   @default(0) // monto fijo adicional
+
+  trips         Trip[]
+}
+
+// ─── VIAJE ──────────────────────────────────────────────
+model Trip {
+  id            Int        @id @default(autoincrement())
+  origin        String
+  destination   String
+  distanceKm    Float
+  departureAt   DateTime
+  status        TripStatus @default(PENDING)
+  baseAmount    Float      // monto bruto ingresado por admin
+  finalCost     Float      // calculado: baseAmount * tariff.multiplier + tariff.fixedAmount
+  createdAt     DateTime   @default(now())
+
+  branchId  Int
+  branch    Branch  @relation(fields: [branchId], references: [id])
+
+  driverId  Int
+  driver    Driver  @relation(fields: [driverId], references: [id])
+
+  vehicleId Int
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+
+  clientId  Int
+  client    Client  @relation(fields: [clientId], references: [id])
+
+  userId    Int
+  user      User    @relation("ClientTrips", fields: [userId], references: [id])
+
+  tariffId  Int
+  tariff    Tariff  @relation(fields: [tariffId], references: [id])
+
+  cargo     Cargo?
+  payment   Payment?
+}
+
+// ─── CARGA ──────────────────────────────────────────────
+model Cargo {
+  id          Int       @id @default(autoincrement())
+  type        CargoType
+  weightKg    Float
+  description String?
+  tripId      Int       @unique
+  trip        Trip      @relation(fields: [tripId], references: [id])
+}
+
+// ─── PAGO ───────────────────────────────────────────────
+model Payment {
+  id        Int       @id @default(autoincrement())
+  amount    Float
+  paid      Boolean   @default(false)
+  paidAt    DateTime?
+  tripId    Int       @unique
+  trip      Trip      @relation(fields: [tripId], references: [id])
+}
