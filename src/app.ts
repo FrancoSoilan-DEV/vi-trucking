@@ -1,14 +1,11 @@
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import express from 'express';
+import path from 'path';
+import { errorMiddleware } from './middlewares/error.middleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-
-
-
-import express from 'express';
-import path from 'path';
 
 const app = express();
 
@@ -27,5 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.render('pages/home', { title: 'VI-Trucking', message: '¡Hola Mundo!' });
 });
+
+// Error middleware — siempre al final
+app.use(errorMiddleware);
 
 export default app;

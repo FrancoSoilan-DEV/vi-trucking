@@ -1,0 +1,21 @@
+export const ROLES = {
+  SUPERADMIN: 'SUPERADMIN',
+  ADMIN: 'ADMIN',
+  DRIVER: 'DRIVER',
+  CLIENT: 'CLIENT',
+} as const;
+
+export const TRIP_STATUS = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+} as const;
+
+export const CARGO_TYPE = {
+  GENERAL: 'GENERAL',
+  FRAGILE: 'FRAGILE',
+  PERISHABLE: 'PERISHABLE',
+  HAZARDOUS: 'HAZARDOUS',
+  HEAVY: 'HEAVY',
+} as const;
