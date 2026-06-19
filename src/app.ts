@@ -3,6 +3,8 @@ import { dirname } from 'path';
 import express from 'express';
 import path from 'path';
 import { errorMiddleware } from './middlewares/error.middleware.js';
+import authRouter from './routers/auth.router.js';
+import userRouter from './routers/user.router.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -27,5 +29,7 @@ app.get('/', (req, res) => {
 
 // Error middleware — siempre al final
 app.use(errorMiddleware);
+app.use('/api/auth', authRouter);
+app.use('/api/users', userRouter);
 
 export default app;
