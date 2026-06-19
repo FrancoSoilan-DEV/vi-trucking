@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import * as branchService from '../services/branch.service';
+import * as branchService from '../services/branch.service.js';
 
 export const getAllBranches = async (req: Request, res: Response, next: NextFunction) => {
     try{
@@ -35,6 +35,16 @@ export const deleteBranch = async (req: Request, res: Response, next: NextFuncti
     const id = parseInt(req.params['id'] as string);
     await branchService.deleteBranch(id);
     res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const createBranch = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { name, country, city, address } = req.body;
+    const branch = await branchService.createBranch(name, country, city, address);
+    res.status(201).json(branch);
   } catch (err) {
     next(err);
   }
