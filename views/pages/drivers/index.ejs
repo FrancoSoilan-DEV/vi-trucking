@@ -1,0 +1,46 @@
+<div class="page-header">
+  <div>
+    <h2>Conductores</h2>
+    <p>Gestión de conductores</p>
+  </div>
+  <a href="/drivers/new" class="btn btn-primary">+ Nuevo conductor</a>
+</div>
+
+<div class="card">
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Licencia</th>
+          <th>Vehículos</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (drivers.length === 0) { %>
+          <tr><td colspan="6"><div class="empty-state"><div class="icon">🧑‍✈️</div><p>No hay conductores</p></div></td></tr>
+        <% } %>
+        <% drivers.forEach(d => { %>
+          <tr>
+            <td>#<%= d.id %></td>
+            <td><%= d.user?.name || '-' %></td>
+            <td><%= d.user?.email || '-' %></td>
+            <td><span class="badge badge-blue"><%= d.license %></span></td>
+            <td><%= d.vehicles?.length || 0 %> vehículo(s)</td>
+            <td>
+              <div class="actions">
+                <a href="/drivers/<%= d.id %>/edit" class="btn btn-secondary btn-sm">✏️</a>
+                <form action="/drivers/<%= d.id %>/delete" method="POST" onsubmit="return confirm('¿Eliminar conductor?')">
+                  <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="page-header">
+  <div>
+    <h2>Nuevo viaje</h2>
+    <p>Completá los datos para crear un viaje</p>
+  </div>
+  <a href="/trips" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <form action="/trips/new" method="POST">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="origin">Origen</label>
+          <input type="text" id="origin" name="origin" required>
+        </div>
+        <div class="form-group">
+          <label for="destination">Destino</label>
+          <input type="text" id="destination" name="destination" required>
+        </div>
+        <div class="form-group">
+          <label for="distanceKm">Distancia (km)</label>
+          <input type="number" id="distanceKm" name="distanceKm" step="0.1" required>
+        </div>
+        <div class="form-group">
+          <label for="departureAt">Fecha de salida</label>
+          <input type="datetime-local" id="departureAt" name="departureAt" required>
+        </div>
+        <div class="form-group">
+          <label for="baseAmount">Monto base ($)</label>
+          <input type="number" id="baseAmount" name="baseAmount" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label for="driverId">Conductor</label>
+          <select id="driverId" name="driverId" required>
+            <option value="">Seleccionar conductor...</option>
+            <% drivers.forEach(d => { %>
+              <option value="<%= d.id %>"><%= d.user?.name %> (<%= d.license %>)</option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="vehicleId">Vehículo</label>
+          <select id="vehicleId" name="vehicleId" required>
+            <option value="">Seleccionar vehículo...</option>
+            <% vehicles.forEach(v => { %>
+              <option value="<%= v.id %>"><%= v.plate %> — <%= v.brand %> <%= v.model %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="clientId">Cliente</label>
+          <select id="clientId" name="clientId" required>
+            <option value="">Seleccionar cliente...</option>
+            <% clients.forEach(c => { %>
+              <option value="<%= c.id %>"><%= c.companyName %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="branchId">Sede</label>
+          <select id="branchId" name="branchId" required>
+            <option value="">Seleccionar sede...</option>
+            <% branches.forEach(b => { %>
+              <option value="<%= b.id %>"><%= b.name %></option>
+            <% }) %>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border);">
+        <h3 style="font-size: 15px; margin-bottom: 16px;">Información de carga</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="cargoType">Tipo de carga</label>
+            <select id="cargoType" name="cargoType" required>
+              <option value="GENERAL">General</option>
+              <option value="FRAGILE">Frágil</option>
+              <option value="PERISHABLE">Perecedero</option>
+              <option value="HAZARDOUS">Peligroso</option>
+              <option value="HEAVY">Pesado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="weightKg">Peso (kg)</label>
+            <input type="number" id="weightKg" name="weightKg" step="0.1" required>
+          </div>
+          <div class="form-group full">
+            <label for="description">Descripción de la carga</label>
+            <textarea id="description" name="description" placeholder="Descripción opcional..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <button type="submit" class="btn btn-primary">Crear viaje</button>
+        <a href="/trips" class="btn btn-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>

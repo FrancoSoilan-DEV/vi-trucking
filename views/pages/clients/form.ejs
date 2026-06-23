@@ -1,0 +1,45 @@
+<div class="page-header">
+  <div>
+    <h2><%= client ? 'Editar cliente' : 'Nuevo cliente' %></h2>
+    <p><%= client ? 'Modificá los datos del cliente' : 'Completá los datos para registrar un cliente' %></p>
+  </div>
+  <a href="/clients" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <form action="<%= client ? '/clients/' + client.id + '/edit' : '/clients/new' %>" method="POST">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="userId">Usuario</label>
+          <select id="userId" name="userId" required>
+            <option value="">Seleccionar usuario...</option>
+            <% users.forEach(u => { %>
+              <option value="<%= u.id %>" <%= client?.userId === u.id ? 'selected' : '' %>><%= u.name %> (<%= u.email %>)</option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="companyName">Nombre de empresa</label>
+          <input type="text" id="companyName" name="companyName" value="<%= client ? client.companyName : '' %>" required>
+        </div>
+        <div class="form-group">
+          <label for="industry">Rubro</label>
+          <input type="text" id="industry" name="industry" value="<%= client ? client.industry : '' %>" required>
+        </div>
+        <div class="form-group">
+          <label for="country">País</label>
+          <input type="text" id="country" name="country" value="<%= client ? client.country : '' %>" required>
+        </div>
+        <div class="form-group">
+          <label for="distanceFromBranchKm">Distancia desde la sede (km)</label>
+          <input type="number" id="distanceFromBranchKm" name="distanceFromBranchKm" value="<%= client ? client.distanceFromBranchKm : '' %>" required>
+        </div>
+      </div>
+      <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <button type="submit" class="btn btn-primary"><%= client ? 'Guardar cambios' : 'Registrar cliente' %></button>
+        <a href="/clients" class="btn btn-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>

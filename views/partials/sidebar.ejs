@@ -1,0 +1,59 @@
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h1>VI-<span>Trucking</span></h1>
+    <p>Sistema de logística</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-title">General</div>
+      <a href="/dashboard" class="nav-item <%= page === 'dashboard' ? 'active' : '' %>">
+        <span class="icon">📊</span> Dashboard
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">Gestión</div>
+      <% if (user && (user.role === 'SUPERADMIN' || user.role === 'ADMIN')) { %>
+      <a href="/users" class="nav-item <%= page === 'users' ? 'active' : '' %>">
+        <span class="icon">👥</span> Usuarios
+      </a>
+      <a href="/branches" class="nav-item <%= page === 'branches' ? 'active' : '' %>">
+        <span class="icon">🏢</span> Sedes
+      </a>
+      <a href="/drivers" class="nav-item <%= page === 'drivers' ? 'active' : '' %>">
+        <span class="icon">🧑‍✈️</span> Conductores
+      </a>
+      <a href="/vehicles" class="nav-item <%= page === 'vehicles' ? 'active' : '' %>">
+        <span class="icon">🚛</span> Vehículos
+      </a>
+      <a href="/clients" class="nav-item <%= page === 'clients' ? 'active' : '' %>">
+        <span class="icon">🏭</span> Clientes
+      </a>
+      <% } %>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">Operaciones</div>
+      <a href="/trips" class="nav-item <%= page === 'trips' ? 'active' : '' %>">
+        <span class="icon">🗺️</span> Viajes
+      </a>
+      <% if (user && user.role === 'SUPERADMIN') { %>
+      <a href="/tariffs" class="nav-item <%= page === 'tariffs' ? 'active' : '' %>">
+        <span class="icon">💰</span> Tarifas
+      </a>
+      <% } %>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar"><%= user ? user.name.charAt(0).toUpperCase() : 'U' %></div>
+      <div>
+        <div class="user-name"><%= user ? user.name : '' %></div>
+        <div class="user-role"><%= user ? user.role : '' %></div>
+      </div>
+    </div>
+    <a href="/auth/logout" class="logout-btn">🚪 Cerrar sesión</a>
+  </div>
+</aside>

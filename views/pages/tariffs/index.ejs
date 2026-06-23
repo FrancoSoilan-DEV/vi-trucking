@@ -1,0 +1,52 @@
+<div class="page-header">
+  <div>
+    <h2>Tarifas</h2>
+    <p>Configuración de tarifas y multiplicadores</p>
+  </div>
+  <a href="/tariffs/new" class="btn btn-primary">+ Nueva tarifa</a>
+</div>
+
+<div class="card">
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>País</th>
+          <th>Tipo de carga</th>
+          <th>Km mín.</th>
+          <th>Km máx.</th>
+          <th>Multiplicador</th>
+          <th>Monto fijo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (tariffs.length === 0) { %>
+          <tr><td colspan="9"><div class="empty-state"><div class="icon">💰</div><p>No hay tarifas configuradas</p></div></td></tr>
+        <% } %>
+        <% tariffs.forEach(t => { %>
+          <tr>
+            <td>#<%= t.id %></td>
+            <td><strong><%= t.name %></strong></td>
+            <td><%= t.country %></td>
+            <td><span class="badge badge-blue"><%= t.cargoType %></span></td>
+            <td><%= t.minKm %> km</td>
+            <td><%= t.maxKm ? t.maxKm + ' km' : '∞' %></td>
+            <td><span class="badge badge-green">x<%= t.multiplier %></span></td>
+            <td>$<%= t.fixedAmount %></td>
+            <td>
+              <div class="actions">
+                <a href="/tariffs/<%= t.id %>/edit" class="btn btn-secondary btn-sm">✏️</a>
+                <form action="/tariffs/<%= t.id %>/delete" method="POST" onsubmit="return confirm('¿Eliminar tarifa?')">
+                  <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

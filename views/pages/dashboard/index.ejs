@@ -1,0 +1,61 @@
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon">🚛</div>
+    <div class="stat-label">Vehículos</div>
+    <div class="stat-value"><%= stats.vehicles %></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🧑‍✈️</div>
+    <div class="stat-label">Conductores</div>
+    <div class="stat-value"><%= stats.drivers %></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🏭</div>
+    <div class="stat-label">Clientes</div>
+    <div class="stat-value"><%= stats.clients %></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🗺️</div>
+    <div class="stat-label">Viajes</div>
+    <div class="stat-value"><%= stats.trips %></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">Últimos viajes</span>
+    <a href="/trips" class="btn btn-secondary btn-sm">Ver todos</a>
+  </div>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Origen</th>
+          <th>Destino</th>
+          <th>Conductor</th>
+          <th>Estado</th>
+          <th>Costo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (recentTrips.length === 0) { %>
+          <tr><td colspan="6"><div class="empty-state"><div class="icon">🗺️</div><p>No hay viajes aún</p></div></td></tr>
+        <% } %>
+        <% recentTrips.forEach(trip => { %>
+          <tr>
+            <td>#<%= trip.id %></td>
+            <td><%= trip.origin %></td>
+            <td><%= trip.destination %></td>
+            <td><%= trip.driver?.user?.name || '-' %></td>
+            <td>
+              <% const statusMap = { PENDING: ['badge-yellow', 'Pendiente'], IN_PROGRESS: ['badge-blue', 'En curso'], COMPLETED: ['badge-green', 'Completado'], CANCELLED: ['badge-red', 'Cancelado'] } %>
+              <span class="badge <%= statusMap[trip.status][0] %>"><%= statusMap[trip.status][1] %></span>
+            </td>
+            <td>$<%= trip.finalCost.toFixed(2) %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

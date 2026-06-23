@@ -1,0 +1,68 @@
+<div class="page-header">
+  <div>
+    <h2><%= vehicle ? 'Editar vehículo' : 'Nuevo vehículo' %></h2>
+    <p><%= vehicle ? 'Modificá los datos del vehículo' : 'Completá los datos para registrar un vehículo' %></p>
+  </div>
+  <a href="/vehicles" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <form action="<%= vehicle ? '/vehicles/' + vehicle.id + '/edit' : '/vehicles/new' %>" method="POST">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="plate">Chapa / Patente</label>
+          <input type="text" id="plate" name="plate" value="<%= vehicle ? vehicle.plate : '' %>" required>
+        </div>
+        <div class="form-group">
+          <label for="brand">Marca</label>
+          <input type="text" id="brand" name="brand" value="<%= vehicle ? vehicle.brand : '' %>" required>
+        </div>
+        <div class="form-group">
+          <label for="model">Modelo</label>
+          <input type="text" id="model" name="model" value="<%= vehicle ? vehicle.model : '' %>" required>
+        </div>
+        <div class="form-group">
+          <label for="year">Año</label>
+          <input type="number" id="year" name="year" value="<%= vehicle ? vehicle.year : '' %>" required>
+        </div>
+        <div class="form-group">
+          <label for="maxCapacityKg">Capacidad máxima (kg)</label>
+          <input type="number" id="maxCapacityKg" name="maxCapacityKg" value="<%= vehicle ? vehicle.maxCapacityKg : '' %>" required>
+        </div>
+        <div class="form-group">
+          <label for="driverId">Conductor</label>
+          <select id="driverId" name="driverId" required>
+            <option value="">Seleccionar conductor...</option>
+            <% drivers.forEach(d => { %>
+              <option value="<%= d.id %>" <%= vehicle?.driverId === d.id ? 'selected' : '' %>><%= d.user?.name %> (<%= d.license %>)</option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="branchId">Sede</label>
+          <select id="branchId" name="branchId" required>
+            <option value="">Seleccionar sede...</option>
+            <% branches.forEach(b => { %>
+              <option value="<%= b.id %>" <%= vehicle?.branchId === b.id ? 'selected' : '' %>><%= b.name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <% if (vehicle) { %>
+        <div class="form-group">
+          <label for="lastMaintenance">Último mantenimiento</label>
+          <input type="date" id="lastMaintenance" name="lastMaintenance" value="<%= vehicle.lastMaintenance ? new Date(vehicle.lastMaintenance).toISOString().split('T')[0] : '' %>">
+        </div>
+        <div class="form-group">
+          <label for="licenseExpiryDate">Vencimiento habilitación</label>
+          <input type="date" id="licenseExpiryDate" name="licenseExpiryDate" value="<%= vehicle.licenseExpiryDate ? new Date(vehicle.licenseExpiryDate).toISOString().split('T')[0] : '' %>">
+        </div>
+        <% } %>
+      </div>
+      <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <button type="submit" class="btn btn-primary"><%= vehicle ? 'Guardar cambios' : 'Registrar vehículo' %></button>
+        <a href="/vehicles" class="btn btn-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>

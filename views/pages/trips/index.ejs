@@ -1,0 +1,67 @@
+<div class="page-header">
+  <div>
+    <h2>Viajes</h2>
+    <p>Gestión de viajes y envíos</p>
+  </div>
+  <% if (user.role === 'ADMIN' || user.role === 'SUPERADMIN') { %>
+  <a href="/trips/new" class="btn btn-primary">+ Nuevo viaje</a>
+  <% } %>
+</div>
+
+<div class="card">
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Origen</th>
+          <th>Destino</th>
+          <th>Distancia</th>
+          <th>Conductor</th>
+          <th>Cliente</th>
+          <th>Salida</th>
+          <th>Estado</th>
+          <th>Costo final</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (trips.length === 0) { %>
+          <tr><td colspan="10"><div class="empty-state"><div class="icon">🗺️</div><p>No hay viajes</p></div></td></tr>
+        <% } %>
+        <% 
+        const statusMap = { 
+          PENDING: ['badge-yellow', 'Pendiente'], 
+          IN_PROGRESS: ['badge-blue', 'En curso'], 
+          COMPLETED: ['badge-green', 'Completado'], 
+          CANCELLED: ['badge-red', 'Cancelado'] 
+        };
+        trips.forEach(t => { %>
+          <tr>
+            <td>#<%= t.id %></td>
+            <td><%= t.origin %></td>
+            <td><%= t.destination %></td>
+            <td><%= t.distanceKm %> km</td>
+            <td><%= t.driver?.user?.name || '-' %></td>
+            <td><%= t.client?.companyName || '-' %></td>
+            <td><%= new Date(t.departureAt).toLocaleDateString('es-ES') %></td>
+            <td><span class="badge <%= statusMap[t.status][0] %>"><%= statusMap[t.status][1] %></span></td>
+            <td><strong>$<%= t.finalCost.toFixed(2) %></strong></td>
+            <td>
+              <div class="actions">
+                <% if (user.role === 'ADMIN' || user.role === 'SUPERADMIN' || user.role === 'DRIVER') { %>
+                <a href="/trips/<%= t.id %>/status" class="btn btn-secondary btn-sm">📋</a>
+                <% } %>
+                <% if (user.role === 'SUPERADMIN') { %>
+                <form action="/trips/<%= t.id %>/delete" method="POST" onsubmit="return confirm('¿Eliminar viaje?')">
+                  <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
+                </form>
+                <% } %>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

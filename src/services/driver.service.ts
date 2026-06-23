@@ -7,7 +7,7 @@ export const getAllDrivers = async () => {
             user: {
                 select: {id:true, name:true, email:true}
             },
-            vehicle:true,
+            vehicles:true,
         }
     });
 };
@@ -23,7 +23,7 @@ export const getDriverById = async (id:number) => {
                     email:true,
                 }
             },
-            vehicle: true,
+            vehicles: true,
         }
     });
     if (!driver) throw new AppError('Driver Not Found',404);

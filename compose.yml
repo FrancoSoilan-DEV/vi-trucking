@@ -5,6 +5,8 @@ services:
       - "3000:3000"
     env_file:
       - .env
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@vi_trucking_db:5432/vi_trucking
     volumes:
       - .:/app
       - /app/node_modules

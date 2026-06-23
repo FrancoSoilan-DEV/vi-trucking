@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> — VI-Trucking</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <%- include('../partials/sidebar') %>
+    <main class="main">
+      <div class="topbar">
+        <div class="topbar-title"><%= title %></div>
+        <div class="topbar-right">
+          <span style="color: var(--text-muted); font-size: 13px;">
+            <%= new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+          </span>
+        </div>
+      </div>
+      <div class="content">
+        <%- include('../partials/flash') %>
+        <%- body %>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

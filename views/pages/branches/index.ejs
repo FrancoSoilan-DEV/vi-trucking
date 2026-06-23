@@ -1,0 +1,50 @@
+<div class="page-header">
+  <div>
+    <h2>Sedes</h2>
+    <p>Gestión de sedes de la empresa</p>
+  </div>
+  <% if (user.role === 'SUPERADMIN') { %>
+  <a href="/branches/new" class="btn btn-primary">+ Nueva sede</a>
+  <% } %>
+</div>
+
+<div class="card">
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>País</th>
+          <th>Ciudad</th>
+          <th>Dirección</th>
+          <% if (user.role === 'SUPERADMIN') { %><th>Acciones</th><% } %>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (branches.length === 0) { %>
+          <tr><td colspan="6"><div class="empty-state"><div class="icon">🏢</div><p>No hay sedes</p></div></td></tr>
+        <% } %>
+        <% branches.forEach(b => { %>
+          <tr>
+            <td>#<%= b.id %></td>
+            <td><%= b.name %></td>
+            <td><%= b.country %></td>
+            <td><%= b.city %></td>
+            <td><%= b.address %></td>
+            <% if (user.role === 'SUPERADMIN') { %>
+            <td>
+              <div class="actions">
+                <a href="/branches/<%= b.id %>/edit" class="btn btn-secondary btn-sm">✏️</a>
+                <form action="/branches/<%= b.id %>/delete" method="POST" onsubmit="return confirm('¿Eliminar sede?')">
+                  <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
+                </form>
+              </div>
+            </td>
+            <% } %>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="page-header">
+  <div>
+    <h2>Usuarios</h2>
+    <p>Gestión de usuarios del sistema</p>
+  </div>
+  <a href="/users/new" class="btn btn-primary">+ Nuevo usuario</a>
+</div>
+
+<div class="card">
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Creado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (users.length === 0) { %>
+          <tr><td colspan="6"><div class="empty-state"><div class="icon">👥</div><p>No hay usuarios</p></div></td></tr>
+        <% } %>
+        <% users.forEach(u => { %>
+          <tr>
+            <td>#<%= u.id %></td>
+            <td><%= u.name %></td>
+            <td><%= u.email %></td>
+            <td>
+              <% const roleMap = { SUPERADMIN: 'badge-purple', ADMIN: 'badge-blue', DRIVER: 'badge-green', CLIENT: 'badge-gray' } %>
+              <span class="badge <%= roleMap[u.role] %>"><%= u.role %></span>
+            </td>
+            <td><%= new Date(u.createdAt).toLocaleDateString('es-ES') %></td>
+            <td>
+              <div class="actions">
+                <a href="/users/<%= u.id %>/edit" class="btn btn-secondary btn-sm">✏️</a>
+                <form action="/users/<%= u.id %>/delete" method="POST" onsubmit="return confirm('¿Eliminar usuario?')">
+                  <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

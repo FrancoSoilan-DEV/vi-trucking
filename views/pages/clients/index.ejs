@@ -1,0 +1,50 @@
+<div class="page-header">
+  <div>
+    <h2>Clientes</h2>
+    <p>Empresas clientes del sistema</p>
+  </div>
+  <a href="/clients/new" class="btn btn-primary">+ Nuevo cliente</a>
+</div>
+
+<div class="card">
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Empresa</th>
+          <th>Rubro</th>
+          <th>País</th>
+          <th>Pedidos</th>
+          <th>Camiones enviados</th>
+          <th>Ganancias</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (clients.length === 0) { %>
+          <tr><td colspan="8"><div class="empty-state"><div class="icon">🏭</div><p>No hay clientes</p></div></td></tr>
+        <% } %>
+        <% clients.forEach(c => { %>
+          <tr>
+            <td>#<%= c.id %></td>
+            <td><strong><%= c.companyName %></strong></td>
+            <td><%= c.industry %></td>
+            <td><%= c.country %></td>
+            <td><%= c.totalOrders %></td>
+            <td><%= c.totalTrucksSent %></td>
+            <td><strong>$<%= c.totalRevenue.toFixed(2) %></strong></td>
+            <td>
+              <div class="actions">
+                <a href="/clients/<%= c.id %>/edit" class="btn btn-secondary btn-sm">✏️</a>
+                <form action="/clients/<%= c.id %>/delete" method="POST" onsubmit="return confirm('¿Eliminar cliente?')">
+                  <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

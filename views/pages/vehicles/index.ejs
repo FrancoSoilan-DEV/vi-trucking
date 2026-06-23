@@ -1,0 +1,50 @@
+<div class="page-header">
+  <div>
+    <h2>Vehículos</h2>
+    <p>Gestión de la flota de camiones</p>
+  </div>
+  <a href="/vehicles/new" class="btn btn-primary">+ Nuevo vehículo</a>
+</div>
+
+<div class="card">
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Chapa</th>
+          <th>Marca / Modelo</th>
+          <th>Año</th>
+          <th>Cap. máx.</th>
+          <th>Km totales</th>
+          <th>Conductor</th>
+          <th>Sede</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (vehicles.length === 0) { %>
+          <tr><td colspan="8"><div class="empty-state"><div class="icon">🚛</div><p>No hay vehículos</p></div></td></tr>
+        <% } %>
+        <% vehicles.forEach(v => { %>
+          <tr>
+            <td><span class="badge badge-gray"><%= v.plate %></span></td>
+            <td><%= v.brand %> <%= v.model %></td>
+            <td><%= v.year %></td>
+            <td><%= v.maxCapacityKg %> kg</td>
+            <td><%= v.totalKm %> km</td>
+            <td><%= v.driver?.user?.name || '-' %></td>
+            <td><%= v.branch?.name || '-' %></td>
+            <td>
+              <div class="actions">
+                <a href="/vehicles/<%= v.id %>/edit" class="btn btn-secondary btn-sm">✏️</a>
+                <form action="/vehicles/<%= v.id %>/delete" method="POST" onsubmit="return confirm('¿Eliminar vehículo?')">
+                  <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="page-header">
+  <div>
+    <h2><%= user ? 'Editar usuario' : 'Nuevo usuario' %></h2>
+    <p><%= user ? 'Modificá los datos del usuario' : 'Completá los datos para crear un usuario' %></p>
+  </div>
+  <a href="/users" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <form action="<%= user ? '/users/' + user.id + '/edit' : '/users/new' %>" method="POST">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="name">Nombre completo</label>
+          <input type="text" id="name" name="name" value="<%= user ? user.name : '' %>" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" value="<%= user ? user.email : '' %>" required>
+        </div>
+        <% if (!user) { %>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <% } %>
+        <div class="form-group">
+          <label for="role">Rol</label>
+          <select id="role" name="role">
+            <option value="CLIENT" <%= user?.role === 'CLIENT' ? 'selected' : '' %>>Cliente</option>
+            <option value="DRIVER" <%= user?.role === 'DRIVER' ? 'selected' : '' %>>Conductor</option>
+            <option value="ADMIN" <%= user?.role === 'ADMIN' ? 'selected' : '' %>>Admin</option>
+            <% if (currentUser.role === 'SUPERADMIN') { %>
+            <option value="SUPERADMIN" <%= user?.role === 'SUPERADMIN' ? 'selected' : '' %>>Superadmin</option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <button type="submit" class="btn btn-primary"><%= user ? 'Guardar cambios' : 'Crear usuario' %></button>
+        <a href="/users" class="btn btn-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>

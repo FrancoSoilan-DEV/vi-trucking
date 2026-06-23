@@ -1,0 +1,33 @@
+<div class="page-header">
+  <div>
+    <h2><%= driver ? 'Editar conductor' : 'Nuevo conductor' %></h2>
+    <p><%= driver ? 'Modificá los datos del conductor' : 'Completá los datos para crear un conductor' %></p>
+  </div>
+  <a href="/drivers" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <form action="<%= driver ? '/drivers/' + driver.id + '/edit' : '/drivers/new' %>" method="POST">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="userId">Usuario</label>
+          <select id="userId" name="userId" required>
+            <option value="">Seleccionar usuario...</option>
+            <% users.forEach(u => { %>
+              <option value="<%= u.id %>" <%= driver?.userId === u.id ? 'selected' : '' %>><%= u.name %> (<%= u.email %>)</option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="license">Número de licencia</label>
+          <input type="text" id="license" name="license" value="<%= driver ? driver.license : '' %>" required>
+        </div>
+      </div>
+      <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <button type="submit" class="btn btn-primary"><%= driver ? 'Guardar cambios' : 'Crear conductor' %></button>
+        <a href="/drivers" class="btn btn-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="page-header">
+  <div>
+    <h2><%= tariff ? 'Editar tarifa' : 'Nueva tarifa' %></h2>
+    <p><%= tariff ? 'Modificá los datos de la tarifa' : 'Configurá una nueva tarifa' %></p>
+  </div>
+  <a href="/tariffs" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <form action="<%= tariff ? '/tariffs/' + tariff.id + '/edit' : '/tariffs/new' %>" method="POST">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="name">Nombre</label>
+          <input type="text" id="name" name="name" value="<%= tariff ? tariff.name : '' %>" placeholder="Ej: Internacional +100km" required>
+        </div>
+        <div class="form-group">
+          <label for="country">País</label>
+          <input type="text" id="country" name="country" value="<%= tariff ? tariff.country : '' %>" required>
+        </div>
+        <div class="form-group">
+          <label for="cargoType">Tipo de carga</label>
+          <select id="cargoType" name="cargoType">
+            <% ['GENERAL','FRAGILE','PERISHABLE','HAZARDOUS','HEAVY'].forEach(type => { %>
+              <option value="<%= type %>" <%= tariff?.cargoType === type ? 'selected' : '' %>><%= type %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="minKm">Km mínimo</label>
+          <input type="number" id="minKm" name="minKm" value="<%= tariff ? tariff.minKm : 0 %>" step="0.1" required>
+        </div>
+        <div class="form-group">
+          <label for="maxKm">Km máximo (vacío = sin límite)</label>
+          <input type="number" id="maxKm" name="maxKm" value="<%= tariff?.maxKm || '' %>" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="multiplier">Multiplicador</label>
+          <input type="number" id="multiplier" name="multiplier" value="<%= tariff ? tariff.multiplier : 1 %>" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label for="fixedAmount">Monto fijo ($)</label>
+          <input type="number" id="fixedAmount" name="fixedAmount" value="<%= tariff ? tariff.fixedAmount : 0 %>" step="0.01" required>
+        </div>
+      </div>
+      <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <button type="submit" class="btn btn-primary"><%= tariff ? 'Guardar cambios' : 'Crear tarifa' %></button>
+        <a href="/tariffs" class="btn btn-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
