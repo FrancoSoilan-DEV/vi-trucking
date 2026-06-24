@@ -432,7 +432,7 @@ To avoid affecting production:
 ---
 
 <div align="center">
-  <h3>Built with Express.js, TypeScript, Prisma, PostgreSQL, and Docker — from scratch.</h3>
+  <h3>Built with Express.js, TypeScript, Prisma, PostgreSQL, and Docker.</h3>
 </div>
 
 <div align="center">
