@@ -3,6 +3,7 @@ import { dirname } from 'path';
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
+import expressLayouts from 'express-ejs-layouts';
 import { errorMiddleware } from './middlewares/error.middleware.js';
 
 // API Routers
@@ -14,7 +15,6 @@ import vehicleRouter from './routers/vehicle.router.js';
 import clientRouter from './routers/client.router.js';
 import tariffRouter from './routers/tariff.router.js';
 import tripRouter from './routers/trip.router.js';
-import expressLayouts from 'express-ejs-layouts';
 
 // Web Routers
 import authWebRouter from './routers/web/auth.web.router.js';
@@ -35,9 +35,9 @@ const app = express();
 // Motor de plantillas EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(process.cwd(), 'views'));
-
 app.use(expressLayouts);
 app.set('layout', 'layouts/main');
+
 // Archivos estáticos
 app.use(express.static(path.join(process.cwd(), 'public')));
 
@@ -45,6 +45,16 @@ app.use(express.static(path.join(process.cwd(), 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Variables disponibles en todas las vistas
+app.use((req, res, next) => {
+  res.locals.user = null;
+  res.locals.page = '';
+  res.locals.title = 'VI-Trucking';
+  res.locals.success = null;
+  res.locals.error = null;
+  next();
+});
 
 // Redirigir raíz al login
 app.get('/', (req, res) => res.redirect('/auth/login'));

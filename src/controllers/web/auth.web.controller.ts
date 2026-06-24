@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import * as authService from '../../services/auth.service.js';
 
 export const getLogin = (req: Request, res: Response) => {
-  res.render('pages/auth/login', { error: null });
+  res.render('pages/auth/login', { layout: 'layouts/empty', error: null });
 };
 
 export const postLogin = async (req: Request, res: Response) => {
