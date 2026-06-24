@@ -1,6 +1,4 @@
-<div align="center">
-  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=120&color=0:2563eb,100:1e293b&text=VI-Trucking&fontColor=ffffff&fontSize=40&fontAlignY=35&desc=Logistics%20%26%20Transport%20Management%20System%20%7C%20Express%20%7C%20PostgreSQL%20%7C%20Docker&descAlignY=55&descSize=18" />
-</div>
+
 
 <div align="center">
 
