@@ -47,6 +47,17 @@ The system exposes both a **REST API** and a **server-rendered EJS frontend** wi
 
 ---
 
+## Demo
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=hM_EGe7JYCY">
+    <img src="https://img.youtube.com/vi/hM_EGe7JYCY/maxresdefault.jpg" alt="VI-Trucking Demo" width="80%"/>
+  </a>
+  <p><em>Click to watch the full system walkthrough on YouTube</em></p>
+</div>
+
+---
+
 ## Core Features
 
 - JWT-based authentication with role-based access control

@@ -1,0 +1,27 @@
+<div class="page-header">
+  <div>
+    <h2>Actualizar estado del viaje #<%= trip.id %></h2>
+    <p><%= trip.origin %> → <%= trip.destination %></p>
+  </div>
+  <a href="/trips" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <form action="/trips/<%= trip.id %>/status" method="POST">
+      <div class="form-group">
+        <label for="status">Estado</label>
+        <select id="status" name="status">
+          <option value="PENDING" <%= trip.status === 'PENDING' ? 'selected' : '' %>>Pendiente</option>
+          <option value="IN_PROGRESS" <%= trip.status === 'IN_PROGRESS' ? 'selected' : '' %>>En curso</option>
+          <option value="COMPLETED" <%= trip.status === 'COMPLETED' ? 'selected' : '' %>>Completado</option>
+          <option value="CANCELLED" <%= trip.status === 'CANCELLED' ? 'selected' : '' %>>Cancelado</option>
+        </select>
+      </div>
+      <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <a href="/trips" class="btn btn-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>

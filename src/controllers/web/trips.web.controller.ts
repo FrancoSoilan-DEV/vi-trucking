@@ -72,3 +72,27 @@ export const postDeleteTrip = async (req: Request, res: Response) => {
     res.redirect('/trips');
   }
 };
+
+export const getTripStatus = async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params['id'] as string);
+    const trip = await tripService.getTripById(id);
+    res.render('pages/trips/status', {
+      title: 'Actualizar estado', page: 'trips',
+      user: getUser(req), trip, success: null, error: null,
+    });
+  } catch (err: any) {
+    res.redirect('/trips');
+  }
+};
+
+export const postTripStatus = async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params['id'] as string);
+    const { status } = req.body;
+    await tripService.updateTripStatus(id, status);
+    res.redirect('/trips');
+  } catch (err: any) {
+    res.redirect('/trips');
+  }
+};
